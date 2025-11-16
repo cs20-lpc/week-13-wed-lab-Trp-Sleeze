@@ -1,21 +1,54 @@
 template <typename T>
 void ArrayList<T>::bubbleSort() {
-    // TODO
+    for (int i = 0; i < this->length - 1; i++) {
+        for (int j = 0; j < this->length - 1 - i; j++) {
+            numComps++;
+            if (buffer[j] > buffer[j + 1]) {
+                swap(j, j + 1);
+                numSwaps++;
+            }
+        }
+    }
 }
 
 template <typename T>
 void ArrayList<T>::insertionSort() {
-    // TODO
+    for (int i = 1; i < this->length; i++) {
+        T key = buffer[i];
+        int j = i - 1;
+
+        while (j >= 0) {
+            numComps++;
+            if (key < buffer[j]) {
+                buffer[j + 1] = buffer[j];
+                numSwaps++;
+                j--;
+            } else {
+                break;
+            }
+        }
+        buffer[j + 1] = key;
+    }
 }
 
 template <typename T>
 void ArrayList<T>::selectionSort() {
-    // TODO
-}
+    for (int i = 0; i < this->length - 1; i++) {
+        int minIndex = i;
 
-/*******************************************************************************
- * No need to modify methods below :)
-*******************************************************************************/
+        for (int j = i + 1; j < this->length; j++) {
+            numComps++;
+            if (buffer[j] < buffer[minIndex]) {
+                minIndex = j;
+            }
+        }
+
+        if (minIndex != i) {
+            swap(i, minIndex);
+            numSwaps++;
+        }
+    }
+}
 
 template <typename T>
 unsigned ArrayList<T>::numComps = 0;
@@ -63,15 +96,15 @@ void ArrayList<T>::append(const T& elem) {
 template <typename T>
 void ArrayList<T>::clear() {
     delete[] buffer;
-    buffer       = nullptr;
+    buffer = nullptr;
     this->length = 0;
 }
 
 template <typename T>
 void ArrayList<T>::copy(const ArrayList<T>& copyObj) {
     this->length = copyObj.length;
-    maxSize      = copyObj.maxSize;
-    buffer       = new T[maxSize];
+    maxSize = copyObj.maxSize;
+    buffer = new T[maxSize];
 
     for (int i = 0; i < this->length; i++) {
         buffer[i] = copyObj.buffer[i];
@@ -83,7 +116,6 @@ T ArrayList<T>::getElement(int position) const {
     if (position < 0 || position >= this->length) {
         throw string("getElement: error, position out of bounds");
     }
-
     return buffer[position];
 }
 
@@ -112,15 +144,12 @@ void ArrayList<T>::insert(int position, const T& elem) {
     if (position < 0 || position >= this->length) {
         throw string("insert: error, position out of bounds");
     }
-    
     if (isFull()) {
         throw string("insert: error, list is full");
     }
-    
     for (int i = this->length; i > position; i--) {
         buffer[i] = buffer[i - 1];
     }
-    
     buffer[position] = elem;
     this->length++;
 }
@@ -140,7 +169,6 @@ void ArrayList<T>::remove(int position) {
     if (position < 0 || position >= this->length) {
         throw string("remove: error, position out of bounds");
     }
-
     for (int i = position; i < this->length - 1; i++) {
         buffer[i] = buffer[i + 1];
     }
@@ -152,31 +180,28 @@ void ArrayList<T>::replace(int position, const T& elem) {
     if (position < 0 || position >= this->length) {
         throw string("replace: error, position out of bounds");
     }
-    
     buffer[position] = elem;
 }
 
 template <typename T>
 void ArrayList<T>::sort(int algo) {
-    numComps = numSwaps = 0;
+    numComps = 0;
+    numSwaps = 0;
 
     if (algo == 1) {
         bubbleSort();
-    }
-    else if (algo == 2) {
+    } else if (algo == 2) {
         selectionSort();
-    }
-    else if (algo == 3) {
+    } else if (algo == 3) {
         insertionSort();
-    }
-    else {
+    } else {
         throw string("sort: error, undefined algorithm chosen");
     }
 }
 
 template <typename T>
 void ArrayList<T>::swap(int i, int j) {
-    T temp    = buffer[i];
+    T temp = buffer[i];
     buffer[i] = buffer[j];
     buffer[j] = temp;
 }
@@ -185,13 +210,11 @@ template <typename T>
 ostream& operator<<(ostream& outStream, const ArrayList<T>& myObj) {
     if (myObj.isEmpty()) {
         outStream << "List is empty, no elements to display.\n";
-    }
-    else {
+    } else {
         for (int i = 0; i < myObj.length; i++) {
             outStream << myObj.buffer[i] << ' ';
         }
         outStream << endl;
     }
-
     return outStream;
 }

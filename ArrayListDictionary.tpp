@@ -38,7 +38,6 @@ Val ArrayListDictionary<Key, Val>::find(const Key& target) const {
             return list->getElement(i).v;
         }
     }
-
     throw string("find: error, unsuccessful search, target key not found");
 }
 
@@ -86,24 +85,22 @@ void ArrayListDictionary<Key, Val>::sort(int algo) {
 
 template <typename Key, typename Val>
 ostream& operator<<(ostream& outStream, const ArrayListDictionary<Key, Val>& myObj) {
-    const char FILL       = '-';
-    const int  WIDTH      = 80;
-    const int  SLOT_WIDTH = 4;
-    const int  KEY_WIDTH  = 25;
+    const char FILL = '-';
+    const int WIDTH = 80;
+    const int SLOT_WIDTH = 4;
+    const int KEY_WIDTH = 25;
 
     typename ArrayListDictionary<Key, Val>::Record r;
 
     if (myObj.size() == 0) {
         outStream << "Dictionary is empty!\n";
-    }
-    else {
+    } else {
         outStream << setfill(FILL) << setw(WIDTH) << "" << endl << setfill(' ');
 
         for (int i = 0; i < myObj.list->getLength(); i++) {
             r = myObj.list->getElement(i);
             outStream << right << setw(SLOT_WIDTH) << i << " | "
-                      << left << setw(KEY_WIDTH)
-                      << r.k << " | " << r.v << endl;
+                      << left << setw(KEY_WIDTH) << r.k << " | " << r.v << endl;
         }
 
         outStream << setfill(FILL) << setw(WIDTH) << "" << endl;
